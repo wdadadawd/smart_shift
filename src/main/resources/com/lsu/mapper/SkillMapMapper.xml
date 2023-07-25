@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsu.mapper.staff.SkillMapMapper">
+
+    <resultMap id="BaseResultMap" type="com.lsu.entity.SkillMap">
+            <id property="skillId" column="skill_id" jdbcType="INTEGER"/>
+            <result property="skillName" column="skill_name" jdbcType="VARCHAR"/>
+            <result property="skillIntroduction" column="skill_introduction" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        skill_id,skill_name,skill_introduction
+    </sql>
+</mapper>

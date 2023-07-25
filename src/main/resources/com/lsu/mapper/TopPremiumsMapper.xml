@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsu.mapper.seize.TopPremiumsMapper">
+
+    <resultMap id="BaseResultMap" type="com.lsu.entity.TopPremiums">
+            <id property="ranking" column="ranking" jdbcType="INTEGER"/>
+            <result property="premiums" column="premiums" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ranking,premiums
+    </sql>
+</mapper>

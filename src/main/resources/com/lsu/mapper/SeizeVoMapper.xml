@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsu.mapper.seize.SeizeVoMapper">
+
+    <resultMap id="BaseResultMap" type="com.lsu.vo.SeizeVo">
+            <result property="seizeId" column="seize_id" jdbcType="INTEGER"/>
+            <result property="storeId" column="store_id" jdbcType="INTEGER"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="losePosition" column="lose_position" jdbcType="VARCHAR"/>
+            <result property="scheduleId" column="schedule_id" jdbcType="BIGINT"/>
+            <result property="maxPremiums" column="max_premiums" jdbcType="DOUBLE"/>
+            <result property="minPremiums" column="min_premiums" jdbcType="DOUBLE"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="staffId" column="staff_id" jdbcType="INTEGER"/>
+            <result property="takeTime" column="take_time" jdbcType="TIMESTAMP"/>
+            <result property="finalPremiums" column="final_premiums" jdbcType="DOUBLE"/>
+            <result property="isAccomplish" column="is_accomplish" jdbcType="TINYINT"/>
+            <result property="scheduleStartTime" column="schedule_start_time" jdbcType="TIMESTAMP"/>
+            <result property="scheduleEndTime" column="schedule_end_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="storeName" column="store_name" jdbcType="VARCHAR"/>
+            <result property="staffName" column="staff_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        seize_id,store_id,start_time,
+        end_time,lose_position,schedule_id,
+        max_premiums,min_premiums,type,
+        staff_id,take_time,final_premiums,
+        is_accomplish,schedule_start_time,schedule_end_time,
+        status,store_name,staff_name
+    </sql>
+</mapper>

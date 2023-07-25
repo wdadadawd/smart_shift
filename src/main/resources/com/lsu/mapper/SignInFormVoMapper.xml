@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsu.mapper.sign.SignInFormVoMapper">
+
+    <resultMap id="BaseResultMap" type="com.lsu.vo.SignInFormVo">
+            <result property="signId" column="sign_id" jdbcType="BIGINT"/>
+            <result property="signTime" column="sign_time" jdbcType="TIME"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="way" column="way" jdbcType="VARCHAR"/>
+            <result property="seat" column="seat" jdbcType="VARCHAR"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="staffName" column="staff_name" jdbcType="VARCHAR"/>
+            <result property="storeName" column="store_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sign_id,sign_time,status,
+        way,seat,date,
+        user_name,staff_name,store_name
+    </sql>
+</mapper>

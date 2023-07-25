@@ -1,0 +1,46 @@
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true           #开启Rest风格
+  datasource:                         #数据库配置
+    url: jdbc:mysql://localhost:3306/schedualdb?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 20021002zt
+    type: com.zaxxer.hikari.HikariDataSource              #连接池
+    driver-class-name: com.mysql.cj.jdbc.Driver           #8.0数据库
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  web:
+    resources:         #改变默认静态资源存放路径
+      static-locations: [classpath:/static/]
+  redis:
+    # redis数据库索引（默认为0），我们使用索引为3的数据库，避免和其他数据库冲突
+    database: 0
+    # redis服务器地址（默认为localhost）
+    host: smartshift.top
+    # redis端口（默认为6379）
+    port: 6379
+    # redis访问密码（默认为空）
+    password: 20021002zt
+    # redis连接超时时间（单位为毫秒）
+    timeout: 2000
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: none           #设置允许跨域请求返回cookie
+        secure: true             #只允许在https下访问
+        http-only: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #配置日志
+  global-config:
+    db-config:
+      #      设置id填充策略
+      id-type: AUTO
+
+shiro:
+  loginUrl: /login.html
