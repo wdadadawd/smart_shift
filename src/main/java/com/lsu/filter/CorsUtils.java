@@ -26,5 +26,6 @@ public class CorsUtils {
         response.setHeader("Access-Control-Allow-Credentials", "true");  //允许携带cookie
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Access-Control-Allow-Headers, X-Requested-With, Access-Control-Allow-Credentials");//允许的请求头
+       // response.setHeader("Access-Control-Expose-Headers", "sessionid"); // 设置允许暴露的自定义响应头部字段
     }
 }

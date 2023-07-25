@@ -13,6 +13,7 @@ import java.io.Serializable;
  * @create 2023-07-24 20:58
  */
 public class MyShiroSessionManager extends DefaultWebSessionManager {
+
     public final static String HEADER_TOKEN_NAME = "JSessionId";
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 

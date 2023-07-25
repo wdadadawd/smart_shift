@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.lsu</groupId>
     <artifactId>smart_shift</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
     <name>smart_shift</name>
     <description>smart_shift</description>
     <properties>
