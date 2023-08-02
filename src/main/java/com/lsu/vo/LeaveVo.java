@@ -81,6 +81,11 @@ public class LeaveVo implements Serializable {
      */
     private String aduitName;
 
+    /**
+     * 请假人id
+     */
+    private String staffId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

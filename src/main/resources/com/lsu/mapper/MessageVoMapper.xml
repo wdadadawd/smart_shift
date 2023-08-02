@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsu.mapper.message.MessageVoMapper">
+
+    <resultMap id="BaseResultMap" type="com.lsu.vo.MessageVo">
+            <result property="messageId" column="message_id" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="sendId" column="send_id" jdbcType="INTEGER"/>
+            <result property="sendDate" column="send_date" jdbcType="TIMESTAMP"/>
+            <result property="receiveId" column="receive_id" jdbcType="INTEGER"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="sendName" column="send_name" jdbcType="VARCHAR"/>
+            <result property="receiveName" column="receive_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        message_id,title,type,
+        send_id,send_date,receive_id,
+        content,status,send_name,
+        receive_name
+    </sql>
+</mapper>

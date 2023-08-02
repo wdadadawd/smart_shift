@@ -38,8 +38,14 @@ public class DateUtils {
 
     //获取指定日期为星期几
     public static String getToDay(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-        return sdf.format(date);
+        String[] weeks = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if(week_index<0){
+            week_index = 0;
+        }
+        return weeks[week_index];
     }
 
     //获取指定日期的时间
@@ -57,6 +63,12 @@ public class DateUtils {
     //获取指定日期的年月日
     public static String getYearAndMonth(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        return sdf.format(date);
+    }
+
+    //获取指定日期的年月日
+    public static String getDateTime(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
 

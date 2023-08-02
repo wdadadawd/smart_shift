@@ -6,10 +6,12 @@ import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * redis 工具类
@@ -73,6 +75,42 @@ public class RedisUtils {
         String prefixName = "seizeList";
         String finalName = prefixName + seizeId;
         redisTemplate.delete(finalName);
+    }
+
+    /**
+     * 获取该邮箱的发送次数
+     * @param email 邮箱
+     */
+    public Integer getMailCodeCount(String email,String use){
+        return (Integer) redisTemplate.opsForValue().get(email + "_" + use+ "_count");
+    }
+
+    /**
+     * 保存该邮箱的验证码
+     * @param email 邮箱
+     * @param code 验证码
+     */
+    public void saveMailCode(String email,String code,String use){
+        //将邮箱验证码以邮件地址为key存入redis,5分钟过期
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(email + "_" + use+ "_code", code, Duration.ofMinutes(5));
+        Integer mailCodeCount = getMailCodeCount(email,use);
+        if (mailCodeCount == null){
+            valueOperations.set(email + "_" + use+ "_count", 1, Duration.ofDays(1));
+        }else{
+            Long expire = redisTemplate.getExpire(email + "_" + use + "_count");
+//            System.out.println(mailCodeCount);
+//            System.out.println(expire);
+            valueOperations.set(email + "_" + use+ "_count", mailCodeCount+1,expire, TimeUnit.SECONDS);
+        }
+    }
+
+    /**
+     * 获取邮箱的验证码
+     * @param email 邮箱
+     */
+    public String getMailCode(String email,String use){
+        return (String) redisTemplate.opsForValue().get(email + "_" + use+ "_code");
     }
 
 }

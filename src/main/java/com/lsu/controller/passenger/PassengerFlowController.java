@@ -68,6 +68,8 @@ public class PassengerFlowController {
             return R.err("文件类型错误");
         }
         List<PassengerFlow> list = ExcelUtils.excelToShopIdList(file.getInputStream(),suffix);
+        if(list == null)
+            return R.err("上传错误");
 //        list.forEach(System.out::println);
         passengerFlowService.insertOrUpdateFlow(list);
         return R.success("上传成功");
@@ -83,7 +85,7 @@ public class PassengerFlowController {
     @GetMapping("/judgeDate")
     public R<Boolean> judgeDate(@DateTimeFormat(pattern="yyyy-MM-dd")@RequestParam Date startDate,@RequestParam Integer storeId){
         if (!"星期一".equals(DateUtils.getToDay(startDate)))
-            return R.err("开始时间错误");
+            return R.err("开始时间错误" + "," + DateUtils.getToDay(startDate) + "," + DateUtils.getDate(startDate));
         List<Date> dateList = DateUtils.getWeekDay(startDate);
         Boolean aBoolean = passengerFlowService.judgeDatePassengerFlow(dateList, storeId);
         return R.success(aBoolean);

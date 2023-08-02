@@ -121,6 +121,18 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
         queryWrapper.eq("store_id",scheduleVo.getStoreId());
         return staffInfoMapper.selectList(queryWrapper);
     }
+
+    /**
+     * 获取所有门店的员工id(除经理、店长)
+     * @return
+     */
+    @Override
+    public List<StaffInfo> getAllStaff() {
+        QueryWrapper<StaffInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.ne("position","店长");
+        queryWrapper.ne("position","经理");
+        return staffInfoMapper.selectList(queryWrapper);
+    }
 }
 
 

@@ -39,6 +39,12 @@ public class ScheduleFormController {
     @Resource
     private ScheduleVoService scheduleVoService;         //排班信息vo
 
+    @Resource
+    private MessageFormService messageFormService;
+
+    @Resource
+    private MesUserMapService mesUserMapService;
+
     /**
      * 对从startDate日期开始的一周进行排班   (startDate为某周周一的日期)
      * @param storeId 门店id
@@ -129,7 +135,7 @@ public class ScheduleFormController {
                     int random = RandomUtils.getRandom(staffWeekWorkTime);    //根据轮盘法获取员工在集合中的位置
                     //循环直到对应员工符合要求 (最多循环四次)
                     int count = 1;
-                    //count为0才能被选中
+                    //scheduleCount为0才能被选中
                     while (!(staffDayWorkTime.get(random)<=6&&staffWeekWorkTime.get(random)<=38) || 0 != staffScheduleCount.get(random)) {
                         if (count == maxCount)
                             break;
@@ -163,6 +169,16 @@ public class ScheduleFormController {
         }
         //程序运行时间
         System.out.println("程序运行时间：" + (System.currentTimeMillis() - startTime) + " 毫秒");
+        //发布消息通知
+        MessageForm messageForm = new MessageForm("抢单结果", null, null, new Date()
+                , DateUtils.getDateTime(dateList.get(0)) + "到" + DateUtils.getDateTime(dateList.get(6)) + "的班次已排,注意查看");
+        messageFormService.save(messageForm);
+        MesUserMap mesUserMap = new MesUserMap(messageForm.getMessageId(), null);
+        for (StaffInfo s:staffInfoList){
+            mesUserMap.setReceiveId(s.getUserId());
+            mesUserMapService.save(mesUserMap);
+        }
+
         return R.success("排班成功");
     }
 

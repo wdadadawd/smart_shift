@@ -44,6 +44,12 @@ public class LeaveFormController {
     @Resource
     private SeizeOrdersService seizeOrdersService;
 
+    @Resource
+    private MesUserMapService mesUserMapService;
+
+    @Resource
+    private MessageFormService messageFormService;
+
 
     /**
      * 发起请假申请
@@ -72,9 +78,9 @@ public class LeaveFormController {
         LeaveForm leaveForm = new LeaveForm();
         leaveForm.setLeaveId(leaveId);
         leaveForm.setAduitDate(new Date());
+        LeaveForm leaveForm2 = leaveFormService.getById(leaveId);
         if (isPass){                     //审批通过
             leaveForm.setAduitStatus("已通过");
-            LeaveForm leaveForm2 = leaveFormService.getById(leaveId);
             StaffInfo staffInfo = staffInfoService.getStaffInfo(leaveForm2.getStaffId());
             //获取请假时间内的班次
             List<ScheduleForm> scheduleFormList = scheduleFormService.getScheduleFormByDate(leaveForm2.getStaffId(), leaveForm2.getStartTime(), leaveForm2.getEndTime());
@@ -96,6 +102,12 @@ public class LeaveFormController {
             }
         } else
             leaveForm.setAduitStatus("未通过");      //审批未通过
+        //发布消息提示
+        MessageForm messageForm = new MessageForm("请假审批结果", null, null, new Date(),
+                "您在" + DateUtils.getDateTime(leaveForm2.getInitiationDate()) + "发起的请假申请已审批,结果为:" + leaveForm.getAduitStatus());
+        messageFormService.save(messageForm);
+        mesUserMapService.save(new MesUserMap(messageForm.getMessageId(),leaveForm2.getStaffId()));
+        //更新数据库
         Integer userId = (Integer)session.getAttribute("userId");   //获取审批人id
         leaveForm.setAduitId(userId);                    //设置审批人id
         if (leaveFormService.updateById(leaveForm))
@@ -127,5 +139,35 @@ public class LeaveFormController {
             storeId = staffInfoService.getStoreIdByUserId(userId);    //获取店长所在门店id
         }
         return R.success(leaveVoService.getLeaveVoPage(current,size,key,startDate,endDate,storeId));
+    }
+
+    /**
+     * 获取员工发起的请假申请
+     * @param userId 用户id
+     * @return
+     */
+    @RequiresRoles(value = {"admin","shopowner","normal"},logical = Logical.OR)
+    @GetMapping("/leaveForm")
+    public R<List<LeaveVo>> getAllLeaveVo(@RequestParam Integer userId){
+        List<LeaveVo> leaveVoByUserId = leaveVoService.getLeaveVoByUserId(userId);
+        return R.success(leaveVoByUserId);
+    }
+
+
+    /**
+     * 撤回请假申请
+     * @param leaveId 请假id
+     * @return
+     */
+    @RequiresRoles(value = {"admin","shopowner","normal"},logical = Logical.OR)
+    @DeleteMapping("/leaveForm")
+    public R<String> deleteLeaveForm(@RequestParam Integer leaveId){
+        String aduitStatus = leaveFormService.getById(leaveId).getAduitStatus();
+        if (!aduitStatus.equals("待审批"))
+            return R.success("请求已处理,撤销失败!");
+        if (leaveFormService.deleteLeaveForm(leaveId) > 0)
+            return R.success("撤销成功");
+        else
+            return R.success("撤销失败");
     }
 }

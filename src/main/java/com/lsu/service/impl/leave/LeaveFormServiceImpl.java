@@ -53,6 +53,19 @@ public class LeaveFormServiceImpl extends ServiceImpl<LeaveFormMapper, LeaveForm
 //        System.out.println(count);
         return count > 0;
     }
+
+    /**
+     * 删除待审批的请假申请
+     * @param leaveId 请假id
+     * @return
+     */
+    @Override
+    public Integer deleteLeaveForm(Integer leaveId) {
+        QueryWrapper<LeaveForm> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("leave_id",leaveId);
+        queryWrapper.eq("aduit_status","待审批");
+        return leaveFormMapper.delete(queryWrapper);
+    }
 }
 
 

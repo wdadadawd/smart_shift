@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
 * @author 30567
@@ -49,6 +50,20 @@ public class LeaveVoServiceImpl extends ServiceImpl<LeaveVoMapper, LeaveVo>
 //        queryWrapper.orderByAsc("start_time");          //按开始时间升序
         queryWrapper.last("order by case when aduit_status = '待审批' then 1 else 2 end, start_time asc");
         return leaveVoMapper.selectPage(page,queryWrapper);
+    }
+
+    /**
+     * 获取用户发起的请求申请
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public List<LeaveVo> getLeaveVoByUserId(Integer userId) {
+        QueryWrapper<LeaveVo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("leave_id","initiation_date","start_time","end_time","aduit_status","leave_cause","aduit_date","aduit_name");
+        queryWrapper.last("order by case when aduit_status = '待审批' then 1 else 2 end, start_time asc");
+        queryWrapper.eq("staff_id",userId);
+        return leaveVoMapper.selectList(queryWrapper);
     }
 }
 

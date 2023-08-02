@@ -13,4 +13,7 @@ import com.lsu.vo.SignInFormVo;
 public interface LeaveFormService extends IService<LeaveForm> {
     //判断该签到记录是否属于请假
     Boolean isLeave(ScheduleForm scheduleForm);
+
+    //删除待审批的请假申请
+    Integer deleteLeaveForm(Integer leaveId);
 }

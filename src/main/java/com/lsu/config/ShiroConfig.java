@@ -46,7 +46,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(shiroFilterChainDefinition().getFilterChainMap());
 
         //设置登录地址
-        shiroFilterFactoryBean.setLoginUrl("/login.html");
+        shiroFilterFactoryBean.setLoginUrl("/index.html");
         return shiroFilterFactoryBean;
     }
 
@@ -87,6 +87,7 @@ public class ShiroConfig {
         definition.addPathDefinition("/login", "anon-i");
         definition.addPathDefinition("/test","anon-i");
         definition.addPathDefinition("/login.html", "anon-i");
+        definition.addPathDefinition("/sendEmailCode", "anon-i");
         //配置登出过滤器
         definition.addPathDefinition("/logout","logout");
         //设置需要进行登录认证的拦截范围

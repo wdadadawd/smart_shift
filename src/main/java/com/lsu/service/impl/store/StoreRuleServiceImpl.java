@@ -71,6 +71,19 @@ public class StoreRuleServiceImpl extends ServiceImpl<StoreRuleMapper, StoreRule
         return storeRuleMapper.selectList(queryWrapper);
     }
 
+    /**
+     * 获取指定规则信息
+     * @param storeId 门店id
+     * @param type 规则类型
+     * @return
+     */
+    @Override
+    public StoreRule getStoreOneRule(Integer storeId, String type) {
+        QueryWrapper<StoreRule> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("store_id",storeId).eq("type",type);
+        return storeRuleMapper.selectOne(queryWrapper);
+    }
+
 }
 
 

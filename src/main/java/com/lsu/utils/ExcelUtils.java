@@ -45,7 +45,10 @@ public class ExcelUtils {
             for (int a = 1; a < rowLength; a++) {           // 遍历表
                 PassengerFlow passengerFlow = null;
                 for (int b = 0; b < colLength; b++) {
-                    cell = sheet.getRow(a).getCell(b);    // 取出第a行b列的单元格数据
+                    Row nowRow = sheet.getRow(a);
+                    if (nowRow==null)               //行不存在
+                        continue;
+                    cell = nowRow.getCell(b);    // 取出第a行b列的单元格数据
                     if (cell == null || cell.getCellType() == CellType.BLANK)     //判断单元格是否有值
                         continue;
                     if (passengerFlow == null)                   //第一次通过创建类型
@@ -58,14 +61,16 @@ public class ExcelUtils {
                         case 4: passengerFlow.setCalculate(cell.getNumericCellValue());break;
                     }
                 }
-//                System.out.println(passengerFlow);
+                System.out.println(passengerFlow);
                 if (passengerFlow != null)
                     list.add(passengerFlow);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
         //5.返回集合
+//        System.out.println(list == null);
         return list;
     }
 }

@@ -42,6 +42,20 @@ public class SignInFormServiceImpl extends ServiceImpl<SignInFormMapper, SignInF
         return this.saveOrUpdate(signInForm,queryWrapper);
     }
 
+    /**
+     * 未存在则添加
+     * @param signInForm 签到信息
+     * @return
+     */
+    @Override
+    public void insertIfNull(SignInForm signInForm) {
+        QueryWrapper<SignInForm> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("staff_id",signInForm.getStaffId());
+        queryWrapper.eq("schedule_id",signInForm.getScheduleId());
+        if (signInFormMapper.selectOne(queryWrapper)==null)
+            signInFormMapper.insert(signInForm);
+    }
+
 }
 
 

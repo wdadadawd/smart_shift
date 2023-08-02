@@ -1,6 +1,5 @@
 package com.lsu.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -60,6 +59,16 @@ public class ClientInfo implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+
+    public ClientInfo() {
+    }
+
+    public ClientInfo(Integer clientId, String name, String email, Date createTime) {
+        this.clientId = clientId;
+        this.name = name;
+        this.email = email;
+        this.createTime = createTime;
+    }
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

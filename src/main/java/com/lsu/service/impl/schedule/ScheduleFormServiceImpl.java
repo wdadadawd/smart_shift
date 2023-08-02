@@ -87,8 +87,8 @@ public class ScheduleFormServiceImpl extends ServiceImpl<ScheduleFormMapper, Sch
         String time1 = DateUtils.getTime(startDate);
         String time2 = DateUtils.getTime(endDate);
         //只要不是班次结束时间 <= 请假开始时间,请假结束时间 <= 班次开始时间的签到都于该请假有关
-        queryWrapper.not(q -> q.gt("date",date1).or(q1 -> q1.eq("date",date1).le("end_time",time1))
-                .or().lt("date",date2).or(q1 -> q1.eq("date",date2).ge("start_time",time2)));
+        queryWrapper.not(q -> q.lt("date",date1).or(q1 -> q1.eq("date",date1).le("end_time",time1))
+                .or().gt("date",date2).or(q1 -> q1.eq("date",date2).ge("start_time",time2)));
         queryWrapper.eq("staff_id",staffId);
         return scheduleFormMapper.selectList(queryWrapper);
     }

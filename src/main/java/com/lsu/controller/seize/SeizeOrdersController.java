@@ -54,6 +54,12 @@ public class SeizeOrdersController {
     @Resource
     private TopPremiumsService topPremiumsService;
 
+    @Resource
+    private MessageFormService messageFormService;
+
+    @Resource
+    private MesUserMapService mesUserMapService;
+
 
     /**
      * 发布抢单
@@ -75,8 +81,18 @@ public class SeizeOrdersController {
             //发布定时任务
             timedGrabService.createLottery(seizeOrders.getEndTime(),seizeOrders.getSeizeId());
         }
-        if (result)
+        if (result){
+            //发布消息通知
+            MessageForm messageForm = new MessageForm("抢单通知", null, null, new Date()
+                    , "您有一条新的抢单,开始时间为:" + seizeOrders.getStartTime());
+            messageFormService.save(messageForm);
+            MesUserMap mesUserMap = new MesUserMap(messageForm.getMessageId(), null);
+            for (StaffInfo staffInfo : staffInfoService.getAllStaff()) {
+                mesUserMap.setReceiveId(staffInfo.getUserId());
+                mesUserMapService.save(mesUserMap);
+            }
             return R.success("发布成功");
+        }
         return R.err("发布失败");
     }
 
@@ -109,6 +125,10 @@ public class SeizeOrdersController {
                     return R.err("你已经抢过这单了!");
                 }else {
                     //添加到缓存中
+                    MessageForm messageForm = new MessageForm("抢单提示", null, null, new Date()
+                            , "抢单成功,请耐心等待最终结果");
+                    messageFormService.save(messageForm);
+                    mesUserMapService.save(new MesUserMap(messageForm.getMessageId(),seizeOrders.getStaffId()));
                     redisUtils.addSeizeCacheAndTime(seizeCache);
                     return R.success("抢单成功");
                 }
@@ -120,6 +140,11 @@ public class SeizeOrdersController {
                 //更新
                 Integer result = seizeOrdersService.updateByIdAndByStaffId(seizeOrders);
                 if (result > 0){
+                    //发布消息通知
+                    MessageForm messageForm = new MessageForm("抢单结果", null, null, new Date()
+                            , "抢单成功,注意新增班次并准时完成");
+                    messageFormService.save(messageForm);
+                    mesUserMapService.save(new MesUserMap(messageForm.getMessageId(),seizeOrders.getStaffId()));
                     //发布签到
                     SignInForm signInForm = new SignInForm(seizeOrders.getStaffId(),seizeOrdersInfo.getScheduleId(),"未签到");
                     signInFormService.save(signInForm);    //保存
@@ -183,6 +208,11 @@ public class SeizeOrdersController {
             //更新排班表
             ScheduleForm scheduleForm = new ScheduleForm(seizeVo.getScheduleId(),seizeOrders.getStaffId());
             scheduleFormService.updateById(scheduleForm);
+            //发布消息通知
+            MessageForm messageForm = new MessageForm("指派通知", null, null, new Date()
+                    , "您已被指派,班次开始时间为:" + DateUtils.getDateTime(seizeVo.getScheduleStartTime()) + ",注意查收");
+            messageFormService.save(messageForm);
+            mesUserMapService.save(new MesUserMap(messageForm.getMessageId(),seizeOrders.getStaffId()));
             return R.success("指派成功");
 
         }else

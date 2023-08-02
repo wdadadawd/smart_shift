@@ -1,6 +1,8 @@
 package com.lsu.controller.store;
 
 import com.lsu.common.R;
+import com.lsu.entity.RuleMap;
+import com.lsu.service.RuleMapService;
 import com.lsu.vo.RuleVo;
 import com.lsu.entity.StoreRule;
 import com.lsu.service.RuleVoService;
@@ -25,6 +27,9 @@ public class StoreRuleController {
 
     @Resource
     private RuleVoService ruleVoService;
+
+    @Resource
+    private  RuleMapService ruleMapService;
 
     /**
      * 添加门店规则
@@ -65,6 +70,12 @@ public class StoreRuleController {
     @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
     @PutMapping("/storeRule")
     public R<String> updateStoreRule(@RequestBody StoreRule storeRule){
+        //判断值是否为空
+        String storeRuleValue = storeRule.getValue();    //规则值
+//        RuleMap ruleMapByType = ruleMapService.getRuleMapByType(storeRule.getType());
+//        String ruleDetail = ruleMapByType.getRuleDetail();   //规则细节
+        if (storeRuleValue == null || storeRuleValue.isEmpty())
+            return R.err("规则值为空");
         if (storeRuleService.updateRule(storeRule)>0)
             return R.success("修改成功");
         else

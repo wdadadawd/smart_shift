@@ -19,4 +19,9 @@ public interface SignInFormService extends IService<SignInForm> {
      * 添加或更新签到信息
      */
     Boolean insertOrUpdateSign(SignInForm signInForm);
+
+    /**
+     * 未存在则添加
+     */
+    void insertIfNull(SignInForm signInForm);
 }

@@ -4,7 +4,7 @@ spring:
       filter:
         enabled: true           #开启Rest风格
   datasource:                         #数据库配置
-    url: jdbc:mysql://localhost:3306/schedualdb?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/schedualdb?&serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
     password: 20021002zt
     type: com.zaxxer.hikari.HikariDataSource              #连接池
@@ -19,13 +19,33 @@ spring:
     # redis数据库索引（默认为0），我们使用索引为3的数据库，避免和其他数据库冲突
     database: 0
     # redis服务器地址（默认为localhost）
-    host: smartshift.top
+    host: smartshift.top    #smartshift.top,localhost
     # redis端口（默认为6379）
     port: 6379
     # redis访问密码（默认为空）
     password: 20021002zt
     # redis连接超时时间（单位为毫秒）
     timeout: 2000
+  mail:
+    # 发送者邮箱
+    username: c3056786023@qq.com
+    #申请到的授权码
+    password: gsdifaxjrsabdgbc
+    # 配置 SMTP 服务器地址
+    host: smtp.qq.com
+    # 端口号465或587
+    port: 465
+    protocol: smtps
+    # 默认的邮件编码为UTF-8
+    default-encoding: UTF-8
+    # 配置SSL 加密工厂
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+          #表示开启 DEBUG 模式，这样，邮件发送过程的日志会在控制台打印出来，方便排查错误
+          debug: true
+          ssl: true
 server:
   servlet:
     session:
@@ -43,4 +63,4 @@ mybatis-plus:
       id-type: AUTO
 
 shiro:
-  loginUrl: /login.html
+  loginUrl: /index.html

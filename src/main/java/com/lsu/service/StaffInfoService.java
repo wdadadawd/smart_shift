@@ -65,4 +65,7 @@ public interface StaffInfoService extends IService<StaffInfo> {
      * 获取合适的换班人员
      */
     List<StaffInfo> getSuitableStaff(ScheduleVo scheduleVo);
+
+    //获取所有门店的员工id(除经理、店长)
+    List<StaffInfo> getAllStaff();
 }

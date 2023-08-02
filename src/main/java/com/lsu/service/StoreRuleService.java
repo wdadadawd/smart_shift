@@ -35,4 +35,9 @@ public interface StoreRuleService extends IService<StoreRule> {
      * 获取指定门店开启的规则的规则值
      */
     List<StoreRule> getStoreUseRule(Integer storeId);
+
+    /**
+     *  获取指定规则信息
+     */
+    StoreRule getStoreOneRule(Integer storeId,String type);
 }

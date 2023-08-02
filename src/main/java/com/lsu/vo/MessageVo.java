@@ -1,25 +1,23 @@
-package com.lsu.entity;
+package com.lsu.vo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 
- * @TableName message_form
+ * @TableName message_vo
  */
-@TableName(value ="message_form")
+@TableName(value ="message_vo")
 @Data
-public class MessageForm implements Serializable {
-
+public class MessageVo implements Serializable {
     /**
      * 消息id
      */
-    @TableId
     private Long messageId;
 
     /**
@@ -42,23 +40,30 @@ public class MessageForm implements Serializable {
      */
     private Date sendDate;
 
+    /**
+     * 消息接收用户ID
+     */
+    private Integer receiveId;
 
     /**
      * 消息内容
      */
     private String content;
 
+    /**
+     * 消息状态  1已读,0未读
+     */
+    private Integer status;
 
-    public MessageForm() {
-    }
+    /**
+     * 
+     */
+    private String sendName;
 
-    public MessageForm(String title, String type, Integer sendId, Date sendDate,  String content) {
-        this.title = title;
-        this.type = type;
-        this.sendId = sendId;
-        this.sendDate = sendDate;
-        this.content = content;
-    }
+    /**
+     * 姓名
+     */
+    private String receiveName;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

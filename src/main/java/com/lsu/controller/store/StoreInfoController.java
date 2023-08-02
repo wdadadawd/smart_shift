@@ -65,6 +65,7 @@ public class  StoreInfoController {
     public R<StoreInfo> getStoreInfoByUserId(@RequestParam Integer storeId){
         StoreInfo storeInfo = storeInfoService.getById(storeId);        //获取门店信息
         storeInfo.setStoreRules(ruleVoService.getRuleListByStoreId(storeId));  //填入门店规则信息
+        storeInfo.setStaffSum(staffInfoService.getStaffSumByStoreId(storeInfo.getId()));//设置门店人数
         return R.success(storeInfo);
     }
 

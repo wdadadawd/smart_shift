@@ -1,12 +1,7 @@
 package com.lsu.service.impl.seize;
 
-import com.lsu.entity.ScheduleForm;
-import com.lsu.entity.SeizeCache;
-import com.lsu.entity.SeizeOrders;
-import com.lsu.entity.SignInForm;
-import com.lsu.service.ScheduleFormService;
-import com.lsu.service.SeizeOrdersService;
-import com.lsu.service.SignInFormService;
+import com.lsu.entity.*;
+import com.lsu.service.*;
 import com.lsu.utils.DateUtils;
 import com.lsu.utils.RedisUtils;
 import org.springframework.scheduling.TaskScheduler;
@@ -36,6 +31,12 @@ public class TimedGrabService {
     private ScheduleFormService scheduleFormService;
 
     @Resource
+    private MessageFormService messageFormService;
+
+    @Resource
+    private MesUserMapService mesUserMapService;
+
+    @Resource
     private RedisUtils redisUtils;
 
     public TimedGrabService() {
@@ -43,7 +44,6 @@ public class TimedGrabService {
         threadPoolTaskScheduler.setPoolSize(4);
         threadPoolTaskScheduler.initialize();
         this.taskScheduler = threadPoolTaskScheduler;
-
     }
 
     //创建定时抢单结束任务
@@ -79,6 +79,22 @@ public class TimedGrabService {
             scheduleForm.setScheduleId(seizeOrdersInfo.getScheduleId());
             scheduleForm.setStaffId(seizeOrders.getStaffId());
             scheduleFormService.updateById(scheduleForm);
+            //发布消息
+            for (i=0;i<seizeCacheList.size();i++){
+                if (i == max)
+                    continue;
+                MessageForm failMessageForm = new MessageForm("抢单结果", null, null, new Date()
+                        , "您在" + seizeCacheList.get(i).getTakeTime()+"参与的抢单结果为:未抢得");
+                messageFormService.save(failMessageForm);
+                mesUserMapService.save(new MesUserMap(failMessageForm.getMessageId(), seizeCacheList.get(i).getStaffId()));
+            }
+            MessageForm successMessageForm = new MessageForm("抢单结果", null, null, new Date()
+                    , "您在" + seizeCache.getTakeTime()+"参与的抢单结果为:已抢得");
+            messageFormService.save(successMessageForm);
+            mesUserMapService.save(new MesUserMap(successMessageForm.getMessageId(), seizeCache.getStaffId()));
         },DateUtils.getOutSecondsTime(endTime,1));
     }
+
+
+
 }
