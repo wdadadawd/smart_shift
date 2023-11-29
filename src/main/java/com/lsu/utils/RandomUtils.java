@@ -11,11 +11,11 @@ import java.util.Random;
 public class RandomUtils {
 
     //轮盘法获取随机数
-    public static int getRandom(List<Integer> list){
+    public static int getRandom(List<Integer> list,int maxWeekTime){
         List<Integer> listClone = new ArrayList<>();
         int sum = 0;                       //总时间
         for (int i=0;i<list.size();i++){
-            int surTime = 40-list.get(i);
+            int surTime = maxWeekTime-list.get(i);
             listClone.add(i,surTime);
             sum+=surTime;
         }

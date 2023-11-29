@@ -125,7 +125,7 @@ public class LeaveFormController {
      * @param endDate 筛选结束时间
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/leaveList")
     public R<Page<LeaveVo>> getLeaveVo(@RequestParam Integer current, @RequestParam Integer size,
                                        @RequestParam(defaultValue = "") String key,HttpSession session,
@@ -134,7 +134,7 @@ public class LeaveFormController {
         //对请求做分析(店长发起的/管理员发起的)
         Integer storeId = null;
         String role = (String) session.getAttribute("role");
-        if (!"admin".equals(role)) {
+        if ("shopowner".equals(role)) {
             Integer userId = (Integer) session.getAttribute("userId");    //获取店长id
             storeId = staffInfoService.getStoreIdByUserId(userId);    //获取店长所在门店id
         }

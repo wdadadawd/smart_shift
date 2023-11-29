@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsu.mapper.opinion.OpinionVoMapper">
+
+    <resultMap id="BaseResultMap" type="com.lsu.vo.OpinionVo">
+            <result property="opinionId" column="opinion_id" jdbcType="INTEGER"/>
+            <result property="proposerId" column="proposer_id" jdbcType="INTEGER"/>
+            <result property="storeId" column="store_id" jdbcType="INTEGER"/>
+            <result property="proposalTime" column="proposal_time" jdbcType="TIMESTAMP"/>
+            <result property="opinionContent" column="opinion_content" jdbcType="VARCHAR"/>
+            <result property="likeCount" column="like_count" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="storeName" column="store_name" jdbcType="VARCHAR"/>
+            <result property="proposerName" column="proposer_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        opinion_id,proposer_id,store_id,
+        proposal_time,opinion_content,like_count,
+        create_time,type,store_name,
+        proposer_name
+    </sql>
+</mapper>

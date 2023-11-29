@@ -171,13 +171,13 @@ public class SeizeOrdersController {
      * @param session 会话
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/seizeOrdersList")
     public R<Page<SeizeVo>> getSeizeVoPage(@RequestParam Integer current, @RequestParam Integer size, @RequestParam(defaultValue = "") String key
                                     , @RequestParam(required = false) Integer storeId, HttpSession session){
         //对请求做分析(店长发起的/管理员发起的)
         String role = (String) session.getAttribute("role");
-        if (!"admin".equals(role)) {
+        if ("shopowner".equals(role)) {
             Integer userId = (Integer) session.getAttribute("userId");    //获取店长id
             storeId = staffInfoService.getStoreIdByUserId(userId);    //获取店长所在门店id
         }
@@ -214,7 +214,6 @@ public class SeizeOrdersController {
             messageFormService.save(messageForm);
             mesUserMapService.save(new MesUserMap(messageForm.getMessageId(),seizeOrders.getStaffId()));
             return R.success("指派成功");
-
         }else
             return R.err("指派失败,抢单状态为:" + status);
     }
@@ -225,7 +224,7 @@ public class SeizeOrdersController {
      * @param seizeId 抢单id
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/fitSeizeStaff")
     public R<List<StaffInfo>> getFitSeizeStaff(@RequestParam Integer seizeId){
         SeizeOrders seizeOrders = seizeOrdersService.getById(seizeId);
@@ -240,7 +239,7 @@ public class SeizeOrdersController {
      * @param staffId 员工id
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner","normal"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","normal","visitor"},logical = Logical.OR)
     @GetMapping("/fitSeize")
     public R<List<SeizeVo>> getFitSeize(Integer staffId){
         List<SeizeVo> seizeList = seizeVoService.getSeizeList(staffInfoService.getById(staffId));
@@ -253,7 +252,7 @@ public class SeizeOrdersController {
      * @param date 日期(年、月)
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner","normal"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","normal","visitor"},logical = Logical.OR)
     @GetMapping("/SeizeTopInfos")
     public R<List<SeizeTopInfo>> getSeizeTopInfos(@DateTimeFormat(pattern="yyyy-MM") @RequestParam Date date){
         List<SeizeTopInfo> seizeTopInfos = seizeVoService.getSeizeTopInfos(DateUtils.getDate(date));

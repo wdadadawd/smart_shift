@@ -43,7 +43,8 @@ public class SeizeVoServiceImpl extends ServiceImpl<SeizeVoMapper, SeizeVo>
                 .or().like("status",key)
                 .or().like("lose_position",key) //对缺失岗位、员工名称、状态进行模糊查询
         );
-        queryWrapper.last("order by case when status = '未发布' then 1 else 2 end, start_time asc");
+        queryWrapper.last("order by case when status = '未发布' then 1" +
+                " when status = '未开始' then 3 when status = '抢单中' then 2 else 4 end, start_time asc");
         return seizeVoMapper.selectPage(page,queryWrapper);
     }
 

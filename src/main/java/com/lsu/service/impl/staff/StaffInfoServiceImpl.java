@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lsu.entity.ScheduleForm;
 import com.lsu.entity.StaffInfo;
+import com.lsu.mapper.schedule.ScheduleFormMapper;
 import com.lsu.mapper.staff.StaffInfoMapper;
 import com.lsu.service.StaffInfoService;
+import com.lsu.utils.DateUtils;
 import com.lsu.vo.ScheduleVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,9 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
 
     @Resource
     private StaffInfoMapper staffInfoMapper;
+
+    @Resource
+    private ScheduleFormMapper scheduleFormMapper;
 
     /**
      * 根据账号id获取用户信息
@@ -119,7 +124,17 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
         queryWrapper.select("user_id","name","position","skill","age","sex","entry_time");
         queryWrapper.ne("position","店长");
         queryWrapper.eq("store_id",scheduleVo.getStoreId());
-        return staffInfoMapper.selectList(queryWrapper);
+        QueryWrapper<ScheduleForm> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("date",DateUtils.getDate(scheduleVo.getDate()))
+                        .gt("start_time", DateUtils.getTime(DateUtils.getOutSecondsTime(scheduleVo.getStartTime(),-120)))
+                        .lt("start_time",DateUtils.getTime(scheduleVo.getEndTime()))
+                                .groupBy("staff_id");
+        List<ScheduleForm> scheduleForms = scheduleFormMapper.selectList(queryWrapper1);
+        List<StaffInfo> staffInfoList = staffInfoMapper.selectList(queryWrapper);
+        for (ScheduleForm scheduleForm : scheduleForms) {
+            staffInfoList.remove(new StaffInfo(scheduleForm.getStaffId()));
+        }
+        return staffInfoList;
     }
 
     /**

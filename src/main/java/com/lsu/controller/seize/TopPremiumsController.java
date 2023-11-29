@@ -26,7 +26,7 @@ public class TopPremiumsController {
      * @param date 日期 (年、月)
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/topPremiums")
     public R<List<TopPremiums>> getTopPremiums(@DateTimeFormat(pattern="yyyy-MM") @RequestParam Date date){
         List<TopPremiums> topPremiumsList = topPremiumsService.getTopPremiumsListByDate(date);

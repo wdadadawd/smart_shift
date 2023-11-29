@@ -1,4 +1,4 @@
-package com.lsu.entity;
+package com.lsu.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,15 +10,14 @@ import lombok.Data;
 
 /**
  * 
- * @TableName opinion
+ * @TableName opinion_vo
  */
-@TableName(value ="opinion")
+@TableName(value ="opinion_vo")
 @Data
-public class Opinion implements Serializable {
+public class OpinionVo implements Serializable {
     /**
      * 意见id
      */
-    @TableId(type = IdType.AUTO)
     private Integer opinionId;
 
     /**
@@ -52,9 +51,19 @@ public class Opinion implements Serializable {
     private Date createTime;
 
     /**
-     * 意见类型 client客户、staff员工
+     * client客户、staff员工
      */
     private String type;
+
+    /**
+     * 门店名称
+     */
+    private String storeName;
+
+    /**
+     * 
+     */
+    private String proposerName;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

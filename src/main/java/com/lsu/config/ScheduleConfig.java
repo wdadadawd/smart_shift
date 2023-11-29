@@ -30,7 +30,7 @@ public class ScheduleConfig {
 
 
     //自动发布签到
-    @Scheduled(cron = "00 30 17 * * ?")              //每日2点自动发布当天的签到
+    @Scheduled(cron = "00 00 2 * * ?")              //每日2点自动发布当天的签到
     public void dailyPublishSign(){
         //1.获取今日班次信息
         List<ScheduleForm> scheduleFormList = scheduleFormService.getDayScheduleForm(LocalDate.now());

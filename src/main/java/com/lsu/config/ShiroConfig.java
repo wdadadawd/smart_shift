@@ -7,7 +7,6 @@ import com.lsu.realm.MyRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
-import org.apache.shiro.web.filter.authc.UserFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
@@ -67,15 +66,17 @@ public class ShiroConfig {
         //4 将 myRealm 存入 defaultWebSecurityManager 对象
         defaultWebSecurityManager.setRealm(myRealm);
         defaultWebSecurityManager.setRememberMeManager(rememberMeManager());     //rememberMe
-//        defaultWebSecurityManager.setSessionManager(sessionManager());
+        defaultWebSecurityManager.setSessionManager(sessionManager());
+//        defaultWebSecurityManager.setCacheManager(null);
         //5 返回
         return defaultWebSecurityManager;
     }
 
-//    @Bean
-//    public MyShiroSessionManager sessionManager() {
-//        return new MyShiroSessionManager();
-//    }
+    @Bean
+    public MyShiroSessionManager sessionManager() {
+        MyShiroSessionManager myShiroSessionManager = new MyShiroSessionManager();
+        return myShiroSessionManager;
+    }
 
     //配置 Shiro 内置过滤器拦截范围
     @Bean
@@ -94,6 +95,16 @@ public class ShiroConfig {
         definition.addPathDefinition("/**", "authc-i");
         //添加存在用户的过滤器（rememberMe）
         definition.addPathDefinition("/**","user-i");
+//        definition.addPathDefinition("/login", "anon");
+//        definition.addPathDefinition("/test","anon");
+//        definition.addPathDefinition("/login.html", "anon");
+//        definition.addPathDefinition("/sendEmailCode", "anon");
+//        //配置登出过滤器
+//        definition.addPathDefinition("/logout","logout");
+//        //设置需要进行登录认证的拦截范围
+//        definition.addPathDefinition("/**", "authc");
+//        //添加存在用户的过滤器（rememberMe）
+//        definition.addPathDefinition("/**","user");
         return definition;
     }
 

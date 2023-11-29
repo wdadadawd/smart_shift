@@ -64,7 +64,7 @@ public class PositionMapController {
      * 查询所有职位
      * @return 职位信息
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/positionMapList")
     public R<List<PositionMap>> getPositionMap(HttpSession session){
         String role = (String) session.getAttribute("role");

@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 
@@ -75,6 +76,21 @@ public class StaffInfo implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date entryTime;
+
+    public StaffInfo() {
+    }
+
+    public StaffInfo(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StaffInfo staffInfo = (StaffInfo) o;
+        return Objects.equals(userId, staffInfo.userId);
+    }
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

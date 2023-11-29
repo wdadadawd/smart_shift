@@ -27,7 +27,7 @@
             <artifactId>client</artifactId>
             <version>0.14.0</version>
         </dependency>
-        <dependency>
+        <dependency> <!--gpt-->
             <groupId>com.theokanning.openai-gpt3-java</groupId>
             <artifactId>service</artifactId>
             <version>0.14.0</version>
@@ -70,7 +70,7 @@
         <dependency> 		 <!--shiro-->
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring-boot-web-starter</artifactId>
-            <version>1.10.0</version>
+            <version>1.9.0</version>
         </dependency>
         <dependency>       <!--热加载-->
             <groupId>org.springframework.boot</groupId>

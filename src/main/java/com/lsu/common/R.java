@@ -13,7 +13,9 @@ public class R<T> {
     private T data;                //成功时需要返回的数据
 
     //私有化构造器
-    private R(){}
+    private R(){
+
+    }
 
     public static <T> R<T> success(T object) {
         R<T> tr = new R<>();

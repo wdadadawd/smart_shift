@@ -24,11 +24,10 @@ public class MyShiroSessionManager extends DefaultWebSessionManager {
      */
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response){
-        String JSessionId = WebUtils.toHttp(request).getHeader(HEADER_TOKEN_NAME);
-//        String JSessionId = request.getParameter("jes");
-//        System.out.println(JSessionId);
-        if(JSessionId == null) {
+        String JSessionId = request.getParameter(HEADER_TOKEN_NAME);
+        if(JSessionId == null || "".equals(JSessionId)) {
             return super.getSessionId(request, response);
+
         } else {
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE,REFERENCED_SESSION_ID_SOURCE);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, JSessionId);

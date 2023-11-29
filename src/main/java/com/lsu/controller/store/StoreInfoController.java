@@ -1,9 +1,7 @@
 package com.lsu.controller.store;
 
-
 import com.lsu.common.R;
 import com.lsu.vo.RuleVo;
-import com.lsu.entity.StaffInfo;
 import com.lsu.entity.StoreInfo;
 import com.lsu.service.RuleVoService;
 import com.lsu.service.StaffInfoService;
@@ -39,7 +37,7 @@ public class  StoreInfoController {
      * @return 对应的分页信息
      * 管理员
      */
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin","visitor"},logical = Logical.OR)
     @GetMapping("/storeInfoList")
     public R<List<StoreInfo>> getAllStoreInfoAndRules(){
         List<StoreInfo> storeInfoList = storeInfoService.getAllStoreInfo(); //获取
@@ -60,7 +58,7 @@ public class  StoreInfoController {
      * @param storeId 门店id
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/storeInfo")
     public R<StoreInfo> getStoreInfoByUserId(@RequestParam Integer storeId){
         StoreInfo storeInfo = storeInfoService.getById(storeId);        //获取门店信息
@@ -116,7 +114,7 @@ public class  StoreInfoController {
      * 获取可为员工分配的门店信息
      * @return 门店名称和id
      */
-    @RequiresRoles(value = {"shopowner","admin"},logical = Logical.OR)
+    @RequiresRoles(value = {"shopowner","admin","visitor"},logical = Logical.OR)
     @GetMapping("/storeName")
     public R<List<StoreInfo>> getStoreName(HttpSession session){
         List<StoreInfo> list = new ArrayList<StoreInfo>();

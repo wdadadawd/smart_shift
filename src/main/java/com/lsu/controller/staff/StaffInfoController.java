@@ -63,7 +63,7 @@ public class StaffInfoController {
      * @param userId 账号id
      * @return
      */
-    @RequiresRoles(value = {"admin","normal","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","normal","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/staffInfo")
     public R<StaffInfoVo> getStaffInfo(@RequestParam Integer userId){
         StaffInfoVo staffInfoVo = staffInfoVoService.getById(userId);
@@ -78,19 +78,19 @@ public class StaffInfoController {
      * @param key 关键字
      * @return 对应的分页信息
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/staffInfoList")
     public R<Page<StaffInfoVo>> getStaffInfoList(HttpSession session, @RequestParam Integer current,
                              @RequestParam Integer size, @RequestParam(defaultValue = "") String key,@RequestParam(required = false) boolean sort){
         Page<StaffInfoVo> page;
         //对请求做分析(店长发起的/管理员发起的)
         String role = (String) session.getAttribute("role");
-        if ("admin".equals(role)) {
-            page = staffInfoVoService.selectStaffInfoVo(current, size, key,null,sort);
-        } else {
+        if ("shopowner".equals(role)) {
             Integer userId = (Integer) session.getAttribute("userId");    //获取店长id
             Integer storeId = staffInfoService.getStoreIdByUserId(userId);    //获取店长所在门店id
             page = staffInfoVoService.selectStaffInfoVo(current, size, key,storeId,sort);
+        } else {
+            page = staffInfoVoService.selectStaffInfoVo(current, size, key,null,sort);
         }
         //获取分页中的记录并处理
         List<StaffInfoVo> records = page.getRecords();

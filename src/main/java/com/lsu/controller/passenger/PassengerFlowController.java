@@ -45,7 +45,7 @@ public class PassengerFlowController {
      * @param storeId 门店id
      * @return 预测客流量集合
      */
-    @RequiresRoles(value = {"shopowner","admin"},logical = Logical.OR)
+    @RequiresRoles(value = {"shopowner","admin","visitor"},logical = Logical.OR)
     @GetMapping("/passengerFlow")
     public R<List<PassengerFlow>> getFlow(@DateTimeFormat(pattern="yyyy-MM-dd") @RequestParam Date date,@RequestParam Integer storeId){
         List<PassengerFlow> list = passengerFlowService.getFlowByIdAndDate(date, storeId);
@@ -55,8 +55,6 @@ public class PassengerFlowController {
     /**
      * 导入excel客流量表
      * @param file
-     * @return
-     * @throws IOException
      */
     @RequiresRoles(value = {"shopowner","admin"},logical = Logical.OR)
     @PostMapping("/uploadExcel")
@@ -81,7 +79,7 @@ public class PassengerFlowController {
      * @param storeId 门店id
      * @return 判断结果 true为已全部导入,false为未完整导入
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/judgeDate")
     public R<Boolean> judgeDate(@DateTimeFormat(pattern="yyyy-MM-dd")@RequestParam Date startDate,@RequestParam Integer storeId){
         if (!"星期一".equals(DateUtils.getToDay(startDate)))

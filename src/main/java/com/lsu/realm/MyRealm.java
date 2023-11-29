@@ -30,7 +30,9 @@ public class MyRealm extends AuthorizingRealm {
         //1.获取用户的身份信息
         String userName = principalCollection.getPrimaryPrincipal().toString();
         //2.获取用户的角色信息(访问数据库)
+        System.out.println("12312312313");
         String userRole = userService.getStatusByName(userName);
+        System.out.println(userRole);
         //3.根据角色信息获取用户权限信息(访问数据库)
 //        List<String> userPermission = userService.getPermissions(userRole);
         //4.创建对象，存储当前登录的用户的权限和角色

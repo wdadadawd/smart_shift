@@ -4,7 +4,7 @@ spring:
       filter:
         enabled: true           #开启Rest风格
   datasource:                         #数据库配置
-    url: jdbc:mysql://localhost:3306/schedualdb?&serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://smartshift.top:3306/schedualdb?&serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
     password: 20021002zt
     type: com.zaxxer.hikari.HikariDataSource              #连接池

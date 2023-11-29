@@ -62,7 +62,7 @@ public class SkillMapController {
      * 获取全部技能信息
      * @return 全部技能信息
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/skillMapList")
     public R<List<SkillMap>> getSkillList(){
         return R.success(skillMapService.list());

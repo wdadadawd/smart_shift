@@ -2,11 +2,13 @@ package com.lsu.controller.sign;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lsu.common.R;
+import com.lsu.config.ScheduleConfig;
 import com.lsu.entity.SeizeOrders;
 import com.lsu.entity.SignInForm;
 import com.lsu.service.*;
 import com.lsu.utils.DateUtils;
 import com.lsu.vo.SignInFormVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.context.annotation.Role;
@@ -41,6 +43,9 @@ public class SignInFormController {
     @Resource
     private SeizeOrdersService seizeOrdersService;
 
+    @Resource
+    private ScheduleConfig scheduleConfig;
+
     /**
      * 分页获取门店签到日期(店长只会默认传回本门店的,不需传入门店id)
      * @param date 筛选日期,不传表示不筛选
@@ -50,14 +55,17 @@ public class SignInFormController {
      * @param storeId 门店id,不传表示不按门店搜索
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/signInFormList")
     public R<Page<SignInFormVo>> getSignInForm(@DateTimeFormat(pattern="yyyy-MM-dd") @RequestParam(required = false) Date date,
                                                @RequestParam Integer current, @RequestParam Integer size, @RequestParam(defaultValue = "") String key
                                                 , @RequestParam(required = false) Integer storeId, HttpSession session){
         //对请求做分析(店长发起的/管理员发起的)
+        System.out.println(SecurityUtils.getSubject().hasRole("admin"));
+        System.out.println(SecurityUtils.getSubject().hasRole("shopowner"));
+        System.out.println(SecurityUtils.getSubject().hasRole("visitor"));
         String role = (String) session.getAttribute("role");
-        if (!"admin".equals(role)) {
+        if ("shopowner".equals(role)) {
             Integer userId = (Integer) session.getAttribute("userId");    //获取店长id
             storeId = staffInfoService.getStoreIdByUserId(userId);    //获取店长所在门店id
         }
@@ -111,7 +119,7 @@ public class SignInFormController {
      * @param staffId 员工id
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner","normal"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","normal","visitor"},logical = Logical.OR)
     @GetMapping("/signInForm")
     public R<SignInFormVo> getSignInForm(@RequestParam Integer staffId){
         SignInFormVo newSignIn = signInFormVoService.getNewSignIn(staffId);
@@ -124,7 +132,7 @@ public class SignInFormController {
      * @param staffId 员工id
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner","normal"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","normal","visitor"},logical = Logical.OR)
     @GetMapping("/staffSignInList")
     public R<List<SignInFormVo>> getSignInListByStaffId(@RequestParam Integer staffId){
         List<SignInFormVo> signListById = signInFormVoService.getSignListById(staffId);
@@ -138,7 +146,7 @@ public class SignInFormController {
      * @param storeId 门店id
      * @return
      */
-    @RequiresRoles(value = {"admin","shopowner","normal"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","normal","visitor"},logical = Logical.OR)
     @GetMapping("/Statistics")
     public R<Integer> getStatistics (@RequestParam String type,@RequestParam Integer storeId){
         switch (type){
@@ -149,5 +157,12 @@ public class SignInFormController {
             case "seize":return R.success(null);                    //抢单班次
             default:return R.err("类型错误");
         }
+    }
+
+    @RequiresRoles("admin")
+    @PostMapping("/ScheduleConfig")
+    public R<String> dailyPublishSign(){
+        scheduleConfig.dailyPublishSign();
+        return R.success("生成签到成功");
     }
 }

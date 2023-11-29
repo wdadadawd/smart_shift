@@ -58,7 +58,7 @@ public class UserController {
             session.setAttribute("role",userService.getStatusByName(user.getUserName()));
             //保存sessionId返回
             response.setHeader("sessionId", sessionId);
-            return R.success(""+userX.getId());               //登录成功
+            return R.success(sessionId+","+userX.getId());               //登录成功
         } catch (AuthenticationException e) {
             return R.err("密码错误");                   //密码错误
         }
@@ -72,6 +72,7 @@ public class UserController {
      */
     @PostMapping("/test")
     public R<String> userTest(@RequestParam String userName){
+        System.out.println(SecurityUtils.getSubject().hasRole("admin"));
         String status = userService.getStatusByName(userName);
         if(status == null)
             return R.err("未检验到用户信息");
@@ -80,6 +81,7 @@ public class UserController {
             case"admin": status = "经理";break;
             case"shopowner": status="店长";break;
             case"client": status = "客户";break;
+            case"visitor": status = "游客";break;
         }
         return R.success(status);
     }

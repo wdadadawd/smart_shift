@@ -25,7 +25,7 @@ public class StaffPreferenceController {
      * @param staffId 员工id
      * @return 偏好集合
      */
-    @RequiresRoles(value = {"normal","admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"normal","admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/preferenceList")
     public R<List<StaffPreference>> getPreferenceList(@RequestParam Integer staffId){
         List<StaffPreference> list = staffPreferenceService.getPreferenceListById(staffId);

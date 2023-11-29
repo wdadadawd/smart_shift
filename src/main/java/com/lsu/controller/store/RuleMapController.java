@@ -65,7 +65,7 @@ public class RuleMapController {
      * @param type 规则类型
      * @return 对应的规则信息
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/ruleMap")
     public R<RuleMap> getRuleMap(@RequestParam String type){
         RuleMap ruleMap = ruleMapService.getRuleMapByType(type);
@@ -76,7 +76,7 @@ public class RuleMapController {
      * 获取全部默认规则
      * @return 全部默认规则集合
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/ruleMapList")
     public R<List<RuleMap>> getRuleMapList(){
         List<RuleMap> list = ruleMapService.list();

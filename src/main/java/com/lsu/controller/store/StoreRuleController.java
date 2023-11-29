@@ -1,7 +1,6 @@
 package com.lsu.controller.store;
 
 import com.lsu.common.R;
-import com.lsu.entity.RuleMap;
 import com.lsu.service.RuleMapService;
 import com.lsu.vo.RuleVo;
 import com.lsu.entity.StoreRule;
@@ -28,8 +27,6 @@ public class StoreRuleController {
     @Resource
     private RuleVoService ruleVoService;
 
-    @Resource
-    private  RuleMapService ruleMapService;
 
     /**
      * 添加门店规则
@@ -88,7 +85,7 @@ public class StoreRuleController {
      * @return 规则集合
      * 管理员、店长本店
      */
-    @RequiresRoles(value = {"admin","shopowner"},logical = Logical.OR)
+    @RequiresRoles(value = {"admin","shopowner","visitor"},logical = Logical.OR)
     @GetMapping("/storeRule")
     public R<List<RuleVo>> getRuleByStoreId(@RequestParam Integer storeId){
         return R.success(ruleVoService.getRuleListByStoreId(storeId));
