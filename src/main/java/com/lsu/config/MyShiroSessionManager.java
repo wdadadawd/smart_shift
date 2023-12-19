@@ -2,7 +2,6 @@ package com.lsu.config;
 
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -27,7 +26,6 @@ public class MyShiroSessionManager extends DefaultWebSessionManager {
         String JSessionId = request.getParameter(HEADER_TOKEN_NAME);
         if(JSessionId == null || "".equals(JSessionId)) {
             return super.getSessionId(request, response);
-
         } else {
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE,REFERENCED_SESSION_ID_SOURCE);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, JSessionId);

@@ -63,5 +63,4 @@ public class MyRealm extends AuthorizingRealm {
         }
         return null;
     }
-
 }
